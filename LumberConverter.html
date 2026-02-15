@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,26 +6,24 @@
 <title>Lumber Volume Converter</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a1612;
-    --surface: #241f1a;
-    --surface-2: #2e2820;
-    --border: #3d3529;
-    --border-active: #8b7355;
-    --text: #e8ddd0;
-    --text-dim: #9a8d7e;
-    --accent: #c4956a;
-    --accent-bright: #e0b088;
-    --grain: #d4a574;
-    --ring: rgba(196, 149, 106, 0.15);
-  }
-
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
+:root {
+--bg: #1a1612;
+--surface: #241f1a;
+--surface-2: #2e2820;
+--border: #3d3529;
+--border-active: #8b7355;
+--text: #e8ddd0;
+--text-dim: #9a8d7e;
+--accent: #c4956a;
+--accent-bright: #e0b088;
+--grain: #d4a574;
+--ring: rgba(196, 149, 106, 0.15);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
+background: var(--bg);
+color: var(--text);
+font-family: 'DM Mono', monospace;
 min-height: 100vh;
 display: flex;
 justify-content: center;
@@ -35,87 +32,69 @@ padding: 40px 20px;
 position: relative;
 overflow-x: hidden;
 }
-
 body::before {
-content: ‘’;
+content: '';
 position: fixed;
 inset: 0;
-background:
-repeating-linear-gradient(
-0deg,
-transparent,
-transparent 2px,
-rgba(196, 149, 106, 0.015) 2px,
-rgba(196, 149, 106, 0.015) 4px
-);
+background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(196, 149, 106, 0.015) 2px, rgba(196, 149, 106, 0.015) 4px);
 pointer-events: none;
 z-index: 0;
 }
-
 .app {
 width: 100%;
 max-width: 520px;
 position: relative;
 z-index: 1;
 }
-
 .header {
 text-align: center;
 margin-bottom: 36px;
 }
-
 .header-icon {
 display: inline-flex;
 align-items: center;
 gap: 8px;
 margin-bottom: 12px;
-color: var(–accent);
+color: var(--accent);
 font-size: 13px;
 letter-spacing: 3px;
 text-transform: uppercase;
 }
-
 .header-icon svg {
 width: 18px;
 height: 18px;
-stroke: var(–accent);
+stroke: var(--accent);
 }
-
 h1 {
-font-family: ‘Fraunces’, serif;
+font-family: 'Fraunces', serif;
 font-size: 32px;
 font-weight: 700;
-color: var(–text);
+color: var(--text);
 letter-spacing: -0.5px;
 line-height: 1.2;
 }
-
 h1 span {
-color: var(–accent);
+color: var(--accent);
 }
-
 .subtitle {
-color: var(–text-dim);
+color: var(--text-dim);
 font-size: 12px;
 margin-top: 8px;
 letter-spacing: 0.5px;
 }
-
 .card {
-background: var(–surface);
-border: 1px solid var(–border);
+background: var(--surface);
+border: 1px solid var(--border);
 border-radius: 12px;
 padding: 28px;
 margin-bottom: 16px;
 transition: border-color 0.3s;
 }
-
 .card:hover {
-border-color: var(–border-active);
+border-color: var(--border-active);
 }
-
 .card-label {
-font-family: ‘Fraunces’, serif;
+font-family: 'Fraunces', serif;
 font-size: 15px;
 font-weight: 600;
 margin-bottom: 18px;
@@ -123,77 +102,66 @@ display: flex;
 align-items: center;
 gap: 10px;
 }
-
 .card-label .dot {
 width: 8px;
 height: 8px;
 border-radius: 50%;
-background: var(–accent);
+background: var(--accent);
 display: inline-block;
 flex-shrink: 0;
 }
-
 .field-group {
 display: flex;
 gap: 12px;
 margin-bottom: 14px;
 }
-
 .field-group:last-child {
 margin-bottom: 0;
 }
-
 .field {
 flex: 1;
 display: flex;
 flex-direction: column;
 gap: 6px;
 }
-
 label {
 font-size: 11px;
-color: var(–text-dim);
+color: var(--text-dim);
 text-transform: uppercase;
 letter-spacing: 1.5px;
 }
-
 input, select {
-background: var(–bg);
-border: 1px solid var(–border);
+background: var(--bg);
+border: 1px solid var(--border);
 border-radius: 8px;
 padding: 12px 14px;
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
+color: var(--text);
+font-family: 'DM Mono', monospace;
 font-size: 15px;
 outline: none;
 transition: border-color 0.25s, box-shadow 0.25s;
 width: 100%;
 -webkit-appearance: none;
 }
-
 input:focus, select:focus {
-border-color: var(–accent);
-box-shadow: 0 0 0 3px var(–ring);
+border-color: var(--accent);
+box-shadow: 0 0 0 3px var(--ring);
 }
-
 input::placeholder {
-color: var(–text-dim);
+color: var(--text-dim);
 opacity: 0.5;
 }
-
 select {
 cursor: pointer;
-background-image: url(“data:image/svg+xml,%3Csvg width=‘10’ height=‘6’ viewBox=‘0 0 10 6’ fill=‘none’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cpath d=‘M1 1L5 5L9 1’ stroke=’%239a8d7e’ stroke-width=‘1.5’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
+background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239a8d7e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 background-repeat: no-repeat;
 background-position: right 14px center;
 padding-right: 36px;
 }
-
 select option {
-background: var(–surface);
-color: var(–text);
+background: var(--surface);
+color: var(--text);
 }
-
 .thickness-row {
 overflow: hidden;
 max-height: 0;
@@ -201,23 +169,20 @@ opacity: 0;
 transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
 margin-top: 0;
 }
-
 .thickness-row.visible {
 max-height: 80px;
 opacity: 1;
 margin-top: 14px;
 }
-
 .divider {
 display: flex;
 align-items: center;
 justify-content: center;
 margin: 4px 0;
 }
-
 .swap-btn {
-background: var(–surface-2);
-border: 1px solid var(–border);
+background: var(--surface-2);
+border: 1px solid var(--border);
 border-radius: 50%;
 width: 44px;
 height: 44px;
@@ -226,145 +191,26 @@ align-items: center;
 justify-content: center;
 cursor: pointer;
 transition: all 0.25s;
-color: var(–text-dim);
+color: var(--text-dim);
 }
-
 .swap-btn:hover {
-border-color: var(–accent);
-color: var(–accent);
+border-color: var(--accent);
+color: var(--accent);
 transform: rotate(180deg);
 }
-
 .swap-btn svg {
 width: 18px;
 height: 18px;
 }
-
 .results-card {
-background: linear-gradient(135deg, var(–surface) 0%, var(–surface-2) 100%);
-border: 1px solid var(–border-active);
+background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+border: 1px solid var(--border-active);
 }
-
 .result-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
 gap: 16px;
 }
-
-.result-item {
-background: rgba(0,0,0,0.2);
-border-radius: 8px;
-padding: 14px;
-text-align: center;
-transition: background 0.2s;
-}
-
-.result-item:hover {
-background: rgba(0,0,0,0.3);
-}
-
-.result-item.full-width {
-grid-column: 1 / -1;
-}
-
-.result-value {
-font-family: ‘Fraunces’, serif;
-font-size: 24px;
-font-weight: 700;
-color: var(–accent-bright);
-margin-bottom: 4px;
-word-break: break-all;
-}
-
-.result-unit {
-font-size: 11px;
-color: var(–text-dim);
-text-transform: uppercase;
-letter-spacing: 1.5px;
-}
-
-.info-bar {
-margin-top: 24px;
-padding: 16px 20px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 10px;
-font-size: 11px;
-color: var(–text-dim);
-line-height: 1.7;
-letter-spacing: 0.3px;
-}
-
-.info-bar strong {
-color: var(–accent);
-font-weight: 500;
-}
-
-@media (max-width: 480px) {
-h1 { font-size: 26px; }
-.card { padding: 20px; }
-.result-grid { grid-template-columns: 1fr; }
-.result-item.full-width { grid-column: auto; }
-}
-
-/* animate in */
-.app { animation: fadeUp 0.6s ease both; }
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.results-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 18px;
-gap: 8px;
-}
-
-.results-header .card-label {
-margin-bottom: 0;
-flex-shrink: 0;
-}
-
-.results-actions {
-display: flex;
-gap: 8px;
-}
-
-.copy-all-btn {
-background: rgba(196, 149, 106, 0.1);
-border: 1px solid var(–border);
-border-radius: 6px;
-padding: 6px 14px;
-color: var(–accent);
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 1px;
-text-transform: uppercase;
-cursor: pointer;
-transition: all 0.25s;
-display: flex;
-align-items: center;
-gap: 6px;
-}
-
-.copy-all-btn:hover {
-background: rgba(196, 149, 106, 0.2);
-border-color: var(–accent);
-}
-
-.copy-all-btn svg {
-width: 14px;
-height: 14px;
-}
-
-.copy-all-btn.copied {
-background: rgba(106, 196, 130, 0.15);
-border-color: #6ac482;
-color: #6ac482;
-}
-
 .result-item {
 background: rgba(0,0,0,0.2);
 border-radius: 8px;
@@ -374,15 +220,99 @@ transition: background 0.2s;
 cursor: pointer;
 position: relative;
 }
-
 .result-item:hover {
 background: rgba(0,0,0,0.3);
 }
-
 .result-item:active {
 transform: scale(0.98);
 }
-
+.result-item.full-width {
+grid-column: 1 / -1;
+}
+.result-value {
+font-family: 'Fraunces', serif;
+font-size: 24px;
+font-weight: 700;
+color: var(--accent-bright);
+margin-bottom: 4px;
+word-break: break-all;
+}
+.result-unit {
+font-size: 11px;
+color: var(--text-dim);
+text-transform: uppercase;
+letter-spacing: 1.5px;
+}
+.info-bar {
+margin-top: 24px;
+padding: 16px 20px;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 10px;
+font-size: 11px;
+color: var(--text-dim);
+line-height: 1.7;
+letter-spacing: 0.3px;
+}
+.info-bar strong {
+color: var(--accent);
+font-weight: 500;
+}
+@media (max-width: 480px) {
+h1 { font-size: 26px; }
+.card { padding: 20px; }
+.result-grid { grid-template-columns: 1fr; }
+.result-item.full-width { grid-column: auto; }
+}
+.app { animation: fadeUp 0.6s ease both; }
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.results-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 18px;
+gap: 8px;
+}
+.results-header .card-label {
+margin-bottom: 0;
+flex-shrink: 0;
+}
+.results-actions {
+display: flex;
+gap: 8px;
+}
+.copy-all-btn {
+background: rgba(196, 149, 106, 0.1);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 6px 14px;
+color: var(--accent);
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+letter-spacing: 1px;
+text-transform: uppercase;
+cursor: pointer;
+transition: all 0.25s;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.copy-all-btn:hover {
+background: rgba(196, 149, 106, 0.2);
+border-color: var(--accent);
+}
+.copy-all-btn svg {
+width: 14px;
+height: 14px;
+}
+.copy-all-btn.copied {
+background: rgba(106, 196, 130, 0.15);
+border-color: #6ac482;
+color: #6ac482;
+}
 .copy-toast {
 position: absolute;
 top: 50%;
@@ -391,7 +321,7 @@ transform: translate(-50%, -50%);
 background: rgba(106, 196, 130, 0.9);
 color: #fff;
 font-size: 11px;
-font-family: ‘DM Mono’, monospace;
+font-family: 'DM Mono', monospace;
 letter-spacing: 1px;
 text-transform: uppercase;
 padding: 4px 12px;
@@ -400,11 +330,9 @@ opacity: 0;
 pointer-events: none;
 transition: opacity 0.2s;
 }
-
 .copy-toast.show {
 opacity: 1;
 }
-
 .image-modal {
 display: none;
 position: fixed;
@@ -418,466 +346,374 @@ padding: 20px;
 -webkit-backdrop-filter: blur(8px);
 backdrop-filter: blur(8px);
 }
-
 .image-modal.visible {
 display: flex;
 }
-
 .image-modal img {
 max-width: 100%;
 max-height: 70vh;
 border-radius: 12px;
 box-shadow: 0 8px 40px rgba(0,0,0,0.5);
 }
-
 .image-modal-hint {
-color: var(–text-dim);
-font-family: ‘DM Mono’, monospace;
+color: var(--text-dim);
+font-family: 'DM Mono', monospace;
 font-size: 12px;
 margin-top: 16px;
 text-align: center;
 letter-spacing: 0.5px;
 line-height: 1.6;
 }
-
 .image-modal-close {
 margin-top: 20px;
-background: var(–surface-2);
-border: 1px solid var(–border);
+background: var(--surface-2);
+border: 1px solid var(--border);
 border-radius: 8px;
 padding: 10px 28px;
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
+color: var(--text);
+font-family: 'DM Mono', monospace;
 font-size: 13px;
 cursor: pointer;
 transition: all 0.2s;
 }
-
 .image-modal-close:hover {
-border-color: var(–accent);
-color: var(–accent);
+border-color: var(--accent);
+color: var(--accent);
 }
 </style>
-
 </head>
 <body>
-
 <div class="app">
-  <div class="header">
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 19l8-14 8 14"/>
-        <path d="M8 12h8"/>
-      </svg>
-      Timber Tools
-    </div>
-    <h1>Lumber <span>Volume</span><br>Converter</h1>
-    <div class="subtitle">Board Feet · Cubic Meters · Square Feet · Square Meters</div>
-  </div>
-
-  <!-- Input -->
-
-  <div class="card">
-    <div class="card-label"><span class="dot"></span> Input</div>
-    <div class="field-group">
-      <div class="field">
-        <label>Value</label>
-        <input type="number" id="inputValue" placeholder="0.00" min="0" step="any">
-      </div>
-      <div class="field">
-        <label>Unit</label>
-        <select id="inputUnit">
-          <option value="mbf">MBF</option>
-          <option value="bf">Board Feet (BF)</option>
-          <option value="m3">Cubic Meters (M³)</option>
-          <option value="ft3">Cubic Feet (FT³)</option>
-          <option value="sqft">Square Feet (SQFT)</option>
-          <option value="sqm">Square Meters (M²)</option>
-        </select>
-      </div>
-    </div>
-    <div class="thickness-row" id="thicknessRow">
-      <div class="field-group">
-        <div class="field">
-          <label>Thickness (inches)</label>
-          <input type="number" id="thickness" placeholder="1.0" min="0" step="any" value="1">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Swap -->
-
-  <div class="divider">
-    <button class="swap-btn" id="swapBtn" title="Swap units">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M7 4v16m0 0l-4-4m4 4l4-4"/>
-        <path d="M17 20V4m0 0l4 4m-4-4l-4 4"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Results -->
-
-  <div class="card results-card">
-    <div class="results-header">
-      <div class="card-label"><span class="dot"></span> Results</div>
-      <div class="results-actions">
-        <button class="copy-all-btn" id="copyAllBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-          </svg>
-          <span id="copyAllLabel">Copy</span>
-        </button>
-        <button class="copy-all-btn" id="saveImageBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-          <span>Image</span>
-        </button>
-      </div>
-    </div>
-    <div class="result-grid" id="results">
-      <div class="result-item" onclick="copySingle(this, 'bf')">
-        <div class="result-value" id="resBF">—</div>
-        <div class="result-unit">Board Feet</div>
-        <div class="copy-toast">Copied</div>
-      </div>
-      <div class="result-item" onclick="copySingle(this, 'mbf')">
-        <div class="result-value" id="resMBF">—</div>
-        <div class="result-unit">MBF</div>
-        <div class="copy-toast">Copied</div>
-      </div>
-      <div class="result-item" onclick="copySingle(this, 'm3')">
-        <div class="result-value" id="resM3">—</div>
-        <div class="result-unit">Cubic Meters</div>
-        <div class="copy-toast">Copied</div>
-      </div>
-      <div class="result-item" onclick="copySingle(this, 'ft3')">
-        <div class="result-value" id="resFT3">—</div>
-        <div class="result-unit">Cubic Feet</div>
-        <div class="copy-toast">Copied</div>
-      </div>
-      <div class="result-item full-width" id="sqftResult" onclick="copySingle(this, 'sqft')">
-        <div class="result-value" id="resSQFT">—</div>
-        <div class="result-unit">Square Feet <span id="sqftThicknessNote"></span></div>
-        <div class="copy-toast">Copied</div>
-      </div>
-      <div class="result-item full-width" id="sqmResult" onclick="copySingle(this, 'sqm')">
-        <div class="result-value" id="resSQM">—</div>
-        <div class="result-unit">Square Meters <span id="sqmThicknessNote"></span></div>
-        <div class="copy-toast">Copied</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="info-bar">
-    <strong>1 Board Foot</strong> = 1 ft × 1 ft × 1 in = 144 in³<br>
-    <strong>1 MBF</strong> = 1,000 Board Feet<br>
-    <strong>1 M³</strong> ≈ 424.752 Board Feet<br>
-    <strong>Square Feet / Square Meters</strong> require a thickness to convert to volume.
-  </div>
+<div class="header">
+<div class="header-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 19l8-14 8 14"/>
+<path d="M8 12h8"/>
+</svg>
+Timber Tools
 </div>
-
-<!-- Image Modal -->
-
+<h1>Lumber <span>Volume</span><br>Converter</h1>
+<div class="subtitle">Board Feet · Cubic Meters · Square Feet · Square Meters</div>
+</div>
+<div class="card">
+<div class="card-label"><span class="dot"></span> Input</div>
+<div class="field-group">
+<div class="field">
+<label>Value</label>
+<input type="number" id="inputValue" placeholder="0.00" min="0" step="any">
+</div>
+<div class="field">
+<label>Unit</label>
+<select id="inputUnit">
+<option value="mbf">MBF</option>
+<option value="bf">Board Feet (BF)</option>
+<option value="m3">Cubic Meters (M³)</option>
+<option value="ft3">Cubic Feet (FT³)</option>
+<option value="sqft">Square Feet (SQFT)</option>
+<option value="sqm">Square Meters (M²)</option>
+</select>
+</div>
+</div>
+<div class="thickness-row" id="thicknessRow">
+<div class="field-group">
+<div class="field">
+<label>Thickness (inches)</label>
+<input type="number" id="thickness" placeholder="1.0" min="0" step="any" value="1">
+</div>
+</div>
+</div>
+</div>
+<div class="divider">
+<button class="swap-btn" id="swapBtn" title="Swap units">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7 4v16m0 0l-4-4m4 4l4-4"/>
+<path d="M17 20V4m0 0l4 4m-4-4l-4 4"/>
+</svg>
+</button>
+</div>
+<div class="card results-card">
+<div class="results-header">
+<div class="card-label"><span class="dot"></span> Results</div>
+<div class="results-actions">
+<button class="copy-all-btn" id="copyAllBtn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+</svg>
+<span id="copyAllLabel">Copy</span>
+</button>
+<button class="copy-all-btn" id="saveImageBtn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+<circle cx="8.5" cy="8.5" r="1.5"/>
+<polyline points="21 15 16 10 5 21"/>
+</svg>
+<span>Image</span>
+</button>
+</div>
+</div>
+<div class="result-grid" id="results">
+<div class="result-item" onclick="copySingle(this, 'bf')">
+<div class="result-value" id="resBF">—</div>
+<div class="result-unit">Board Feet</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this, 'mbf')">
+<div class="result-value" id="resMBF">—</div>
+<div class="result-unit">MBF</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this, 'm3')">
+<div class="result-value" id="resM3">—</div>
+<div class="result-unit">Cubic Meters</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this, 'ft3')">
+<div class="result-value" id="resFT3">—</div>
+<div class="result-unit">Cubic Feet</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item full-width" id="sqftResult" onclick="copySingle(this, 'sqft')">
+<div class="result-value" id="resSQFT">—</div>
+<div class="result-unit">Square Feet <span id="sqftThicknessNote"></span></div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item full-width" id="sqmResult" onclick="copySingle(this, 'sqm')">
+<div class="result-value" id="resSQM">—</div>
+<div class="result-unit">Square Meters <span id="sqmThicknessNote"></span></div>
+<div class="copy-toast">Copied</div>
+</div>
+</div>
+</div>
+<div class="info-bar">
+<strong>1 Board Foot</strong> = 1 ft × 1 ft × 1 in = 144 in³<br>
+<strong>1 MBF</strong> = 1,000 Board Feet<br>
+<strong>1 M³</strong> ≈ 424.752 Board Feet<br>
+<strong>Square Feet / Square Meters</strong> require a thickness to convert to volume.
+</div>
+</div>
 <div class="image-modal" id="imageModal">
-  <img id="imageModalImg" src="" alt="Lumber conversion results">
-  <div class="image-modal-hint">Long-press image to copy</div>
-  <button class="image-modal-close" id="imageModalClose">Close</button>
+<img id="imageModalImg" src="" alt="Lumber conversion results">
+<div class="image-modal-hint">Long-press image to copy</div>
+<button class="image-modal-close" id="imageModalClose">Close</button>
 </div>
-
 <script>
-  const inputValue = document.getElementById('inputValue');
-  const inputUnit = document.getElementById('inputUnit');
-  const thickness = document.getElementById('thickness');
-  const thicknessRow = document.getElementById('thicknessRow');
-  const swapBtn = document.getElementById('swapBtn');
-
-  const resBF = document.getElementById('resBF');
-  const resMBF = document.getElementById('resMBF');
-  const resM3 = document.getElementById('resM3');
-  const resFT3 = document.getElementById('resFT3');
-  const resSQFT = document.getElementById('resSQFT');
-  const resSQM = document.getElementById('resSQM');
-  const sqftNote = document.getElementById('sqftThicknessNote');
-  const sqmNote = document.getElementById('sqmThicknessNote');
-
-  let lastOutputUnit = 'bf';
-
-  // Conversion constants
-  const BF_PER_M3 = 424.752;       // 1 m³ = 424.752 board feet
-  const BF_PER_FT3 = 12;           // 1 ft³ = 12 board feet
-  const FT3_PER_M3 = 35.3147;
-
-  function fmt(n) {
-    if (n === 0) return '0';
-    if (Math.abs(n) >= 1000) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
-    if (Math.abs(n) >= 1) return n.toLocaleString('en-US', { maximumFractionDigits: 4 });
-    return n.toLocaleString('en-US', { maximumFractionDigits: 6 });
-  }
-
-  function convert() {
-    const val = parseFloat(inputValue.value);
-    const unit = inputUnit.value;
-    const thick = parseFloat(thickness.value) || 1;
-
-    // Show/hide thickness
-    thicknessRow.classList.toggle('visible', unit === 'sqft' || unit === 'sqm');
-
-    if (isNaN(val) || val === 0) {
-      resBF.textContent = '—';
-      resMBF.textContent = '—';
-      resM3.textContent = '—';
-      resFT3.textContent = '—';
-      resSQFT.textContent = '—';
-      resSQM.textContent = '—';
-      sqftNote.textContent = '';
-      sqmNote.textContent = '';
-      return;
-    }
-
-    // Convert input to board feet first
-    let bf;
-    switch (unit) {
-      case 'bf':
-        bf = val;
-        break;
-      case 'mbf':
-        bf = val * 1000;
-        break;
-      case 'm3':
-        bf = val * BF_PER_M3;
-        break;
-      case 'ft3':
-        bf = val * BF_PER_FT3;
-        break;
-      case 'sqft':
-        // sqft × thickness(in) = board feet
-        bf = val * thick;
-        break;
-      case 'sqm':
-        // sqm to sqft, then × thickness(in) = board feet
-        bf = val * 10.7639 * thick;
-        break;
-    }
-
-    // Convert board feet to all units
-    const mbf = bf / 1000;
-    const m3 = bf / BF_PER_M3;
-    const ft3 = bf / BF_PER_FT3;
-    // For sqft output, use current thickness
-    const displayThick = (unit === 'sqft' || unit === 'sqm') ? thick : parseFloat(thickness.value) || 1;
-    const sqft = bf / displayThick;
-    const sqm = sqft / 10.7639;
-
-    resBF.textContent = fmt(bf);
-    resMBF.textContent = fmt(mbf);
-    resM3.textContent = fmt(m3);
-    resFT3.textContent = fmt(ft3);
-    resSQFT.textContent = fmt(sqft);
-    resSQM.textContent = fmt(sqm);
-    sqftNote.textContent = `@ ${displayThick}" thick`;
-    sqmNote.textContent = `@ ${displayThick}" thick`;
-  }
-
-  inputValue.addEventListener('input', convert);
-  inputUnit.addEventListener('change', convert);
-  thickness.addEventListener('input', convert);
-
-  swapBtn.addEventListener('click', () => {
-    // Cycle through output units as new input
-    const units = ['mbf', 'bf', 'm3', 'ft3', 'sqft', 'sqm'];
-    const currentIdx = units.indexOf(inputUnit.value);
-    const nextIdx = (currentIdx + 1) % units.length;
-    inputUnit.value = units[nextIdx];
-    convert();
-  });
-
-  // Initialize
-  convert();
-  inputValue.focus();
-
-  // Copy functions
-  const copyAllBtn = document.getElementById('copyAllBtn');
-  const copyAllLabel = document.getElementById('copyAllLabel');
-
-  const unitLabels = {
-    bf: 'Board Feet',
-    mbf: 'MBF',
-    m3: 'Cubic Meters',
-    ft3: 'Cubic Feet',
-    sqft: 'Square Feet',
-    sqm: 'Square Meters'
-  };
-
-  function getResultsText() {
-    const thick = parseFloat(thickness.value) || 1;
-    const lines = [
-      `Board Feet: ${resBF.textContent}`,
-      `MBF: ${resMBF.textContent}`,
-      `Cubic Meters: ${resM3.textContent}`,
-      `Cubic Feet: ${resFT3.textContent}`,
-      `Square Feet: ${resSQFT.textContent} @ ${thick}" thick`,
-      `Square Meters: ${resSQM.textContent} @ ${thick}" thick`,
-    ];
-    return lines.join('\n');
-  }
-
-  function showToast(el) {
-    const toast = el.querySelector('.copy-toast');
-    if (!toast) return;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 900);
-  }
-
-  function copySingle(el, unit) {
-    const valueEl = el.querySelector('.result-value');
-    if (!valueEl || valueEl.textContent === '—') return;
-    const text = `${unitLabels[unit]}: ${valueEl.textContent}`;
-    navigator.clipboard.writeText(text).then(() => showToast(el));
-  }
-
-  copyAllBtn.addEventListener('click', () => {
-    if (resBF.textContent === '—') return;
-    navigator.clipboard.writeText(getResultsText()).then(() => {
-      copyAllBtn.classList.add('copied');
-      copyAllLabel.textContent = 'Copied!';
-      setTimeout(() => {
-        copyAllBtn.classList.remove('copied');
-        copyAllLabel.textContent = 'Copy';
-      }, 1500);
-    });
-  });
-
-  // ─── Image Generation (Canvas API) ───
-  const saveImageBtn = document.getElementById('saveImageBtn');
-  const imageModal = document.getElementById('imageModal');
-  const imageModalImg = document.getElementById('imageModalImg');
-  const imageModalClose = document.getElementById('imageModalClose');
-
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
-  }
-
-  function generateResultsImage() {
-    const dpr = 2;
-    const W = 600 * dpr;
-    const pad = 40 * dpr;
-    const thick = parseFloat(thickness.value) || 1;
-
-    const data = [
-      { label: 'Board Feet', value: resBF.textContent },
-      { label: 'MBF', value: resMBF.textContent },
-      { label: 'Cubic Meters', value: resM3.textContent },
-      { label: 'Cubic Feet', value: resFT3.textContent },
-      { label: `Square Feet @ ${thick}"`, value: resSQFT.textContent },
-      { label: `Square Meters @ ${thick}"`, value: resSQM.textContent },
-    ];
-
-    const unitNames = { mbf:'MBF', bf:'Board Feet', m3:'Cubic Meters', ft3:'Cubic Feet', sqft:'Square Feet', sqm:'Square Meters' };
-    const inputSummary = `${inputValue.value} ${unitNames[inputUnit.value]}`;
-
-    const titleH = 50 * dpr;
-    const subtitleH = 30 * dpr;
-    const rowH = 70 * dpr;
-    const rowGap = 12 * dpr;
-    const colGap = 12 * dpr;
-    const gridTop = pad + titleH + subtitleH + 20 * dpr;
-    const cols = 2;
-    const rows = Math.ceil(data.length / cols);
-    const colW = (W - pad * 2 - colGap) / cols;
-    const gridH = rows * rowH + (rows - 1) * rowGap;
-    const footerH = 40 * dpr;
-    const H = gridTop + gridH + footerH + pad;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = W;
-    canvas.height = H;
-    const ctx = canvas.getContext('2d');
-
-    // Background
-    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-    bgGrad.addColorStop(0, '#241f1a');
-    bgGrad.addColorStop(1, '#2e2820');
-    ctx.fillStyle = bgGrad;
-    roundRect(ctx, 0, 0, W, H, 20 * dpr);
-    ctx.fill();
-
-    // Border
-    ctx.strokeStyle = '#8b7355';
-    ctx.lineWidth = 2 * dpr;
-    roundRect(ctx, 0, 0, W, H, 20 * dpr);
-    ctx.stroke();
-
-    // Title
-    ctx.fillStyle = '#e0b088';
-    ctx.font = `bold ${22 * dpr}px Georgia, serif`;
-    ctx.textAlign = 'center';
-    ctx.fillText('Lumber Volume Converter', W / 2, pad + 28 * dpr);
-
-    // Input summary
-    ctx.fillStyle = '#9a8d7e';
-    ctx.font = `${13 * dpr}px monospace`;
-    ctx.fillText(`Input: ${inputSummary}`, W / 2, pad + titleH + 12 * dpr);
-
-    // Grid items
-    for (let i = 0; i < data.length; i++) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const x = pad + col * (colW + colGap);
-      const y = gridTop + row * (rowH + rowGap);
-
-      ctx.fillStyle = 'rgba(0,0,0,0.25)';
-      roundRect(ctx, x, y, colW, rowH, 10 * dpr);
-      ctx.fill();
-
-      ctx.fillStyle = '#e0b088';
-      ctx.font = `bold ${20 * dpr}px Georgia, serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText(data[i].value, x + colW / 2, y + 32 * dpr);
-
-      ctx.fillStyle = '#9a8d7e';
-      ctx.font = `${10 * dpr}px monospace`;
-      ctx.fillText(data[i].label.toUpperCase(), x + colW / 2, y + 54 * dpr);
-    }
-
-    // Footer
-    ctx.fillStyle = '#5a4d3e';
-    ctx.font = `${10 * dpr}px monospace`;
-    ctx.fillText('TIMBER TOOLS · LUMBER VOLUME CONVERTER', W / 2, H - pad + 10 * dpr);
-
-    return canvas;
-  }
-
-  saveImageBtn.addEventListener('click', () => {
-    if (resBF.textContent === '—') return;
-    const canvas = generateResultsImage();
-    imageModalImg.src = canvas.toDataURL('image/png');
-    imageModal.classList.add('visible');
-  });
-
-  imageModalClose.addEventListener('click', () => {
-    imageModal.classList.remove('visible');
-  });
-
-  imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) imageModal.classList.remove('visible');
-  });
+var inputValue = document.getElementById('inputValue');
+var inputUnit = document.getElementById('inputUnit');
+var thickness = document.getElementById('thickness');
+var thicknessRow = document.getElementById('thicknessRow');
+var swapBtn = document.getElementById('swapBtn');
+var resBF = document.getElementById('resBF');
+var resMBF = document.getElementById('resMBF');
+var resM3 = document.getElementById('resM3');
+var resFT3 = document.getElementById('resFT3');
+var resSQFT = document.getElementById('resSQFT');
+var resSQM = document.getElementById('resSQM');
+var sqftNote = document.getElementById('sqftThicknessNote');
+var sqmNote = document.getElementById('sqmThicknessNote');
+var BF_PER_M3 = 424.752;
+var BF_PER_FT3 = 12;
+function fmt(n) {
+if (n === 0) return '0';
+if (Math.abs(n) >= 1000) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+if (Math.abs(n) >= 1) return n.toLocaleString('en-US', { maximumFractionDigits: 4 });
+return n.toLocaleString('en-US', { maximumFractionDigits: 6 });
+}
+function convert() {
+var val = parseFloat(inputValue.value);
+var unit = inputUnit.value;
+var thick = parseFloat(thickness.value) || 1;
+thicknessRow.classList.toggle('visible', unit === 'sqft' || unit === 'sqm');
+if (isNaN(val) || val === 0) {
+resBF.textContent = '\u2014';
+resMBF.textContent = '\u2014';
+resM3.textContent = '\u2014';
+resFT3.textContent = '\u2014';
+resSQFT.textContent = '\u2014';
+resSQM.textContent = '\u2014';
+sqftNote.textContent = '';
+sqmNote.textContent = '';
+return;
+}
+var bf;
+switch (unit) {
+case 'bf': bf = val; break;
+case 'mbf': bf = val * 1000; break;
+case 'm3': bf = val * BF_PER_M3; break;
+case 'ft3': bf = val * BF_PER_FT3; break;
+case 'sqft': bf = val * thick; break;
+case 'sqm': bf = val * 10.7639 * thick; break;
+}
+var mbf = bf / 1000;
+var m3 = bf / BF_PER_M3;
+var ft3 = bf / BF_PER_FT3;
+var displayThick = (unit === 'sqft' || unit === 'sqm') ? thick : parseFloat(thickness.value) || 1;
+var sqft = bf / displayThick;
+var sqm = sqft / 10.7639;
+resBF.textContent = fmt(bf);
+resMBF.textContent = fmt(mbf);
+resM3.textContent = fmt(m3);
+resFT3.textContent = fmt(ft3);
+resSQFT.textContent = fmt(sqft);
+resSQM.textContent = fmt(sqm);
+sqftNote.textContent = '@ ' + displayThick + '" thick';
+sqmNote.textContent = '@ ' + displayThick + '" thick';
+}
+inputValue.addEventListener('input', convert);
+inputUnit.addEventListener('change', convert);
+thickness.addEventListener('input', convert);
+swapBtn.addEventListener('click', function() {
+var units = ['mbf', 'bf', 'm3', 'ft3', 'sqft', 'sqm'];
+var currentIdx = units.indexOf(inputUnit.value);
+var nextIdx = (currentIdx + 1) % units.length;
+inputUnit.value = units[nextIdx];
+convert();
+});
+convert();
+inputValue.focus();
+var copyAllBtn = document.getElementById('copyAllBtn');
+var copyAllLabel = document.getElementById('copyAllLabel');
+var unitLabels = {
+bf: 'Board Feet',
+mbf: 'MBF',
+m3: 'Cubic Meters',
+ft3: 'Cubic Feet',
+sqft: 'Square Feet',
+sqm: 'Square Meters'
+};
+function getResultsText() {
+var thick = parseFloat(thickness.value) || 1;
+var lines = [
+'Board Feet: ' + resBF.textContent,
+'MBF: ' + resMBF.textContent,
+'Cubic Meters: ' + resM3.textContent,
+'Cubic Feet: ' + resFT3.textContent,
+'Square Feet: ' + resSQFT.textContent + ' @ ' + thick + '" thick',
+'Square Meters: ' + resSQM.textContent + ' @ ' + thick + '" thick'
+];
+return lines.join('\n');
+}
+function showToast(el) {
+var toast = el.querySelector('.copy-toast');
+if (!toast) return;
+toast.classList.add('show');
+setTimeout(function() { toast.classList.remove('show'); }, 900);
+}
+function copySingle(el, unit) {
+var valueEl = el.querySelector('.result-value');
+if (!valueEl || valueEl.textContent === '\u2014') return;
+var text = unitLabels[unit] + ': ' + valueEl.textContent;
+navigator.clipboard.writeText(text).then(function() { showToast(el); });
+}
+copyAllBtn.addEventListener('click', function() {
+if (resBF.textContent === '\u2014') return;
+navigator.clipboard.writeText(getResultsText()).then(function() {
+copyAllBtn.classList.add('copied');
+copyAllLabel.textContent = 'Copied!';
+setTimeout(function() {
+copyAllBtn.classList.remove('copied');
+copyAllLabel.textContent = 'Copy';
+}, 1500);
+});
+});
+var saveImageBtn = document.getElementById('saveImageBtn');
+var imageModal = document.getElementById('imageModal');
+var imageModalImg = document.getElementById('imageModalImg');
+var imageModalClose = document.getElementById('imageModalClose');
+function roundRect(ctx, x, y, w, h, r) {
+ctx.beginPath();
+ctx.moveTo(x + r, y);
+ctx.lineTo(x + w - r, y);
+ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+ctx.lineTo(x + w, y + h - r);
+ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+ctx.lineTo(x + r, y + h);
+ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+ctx.lineTo(x, y + r);
+ctx.quadraticCurveTo(x, y, x + r, y);
+ctx.closePath();
+}
+function generateResultsImage() {
+var dpr = 2;
+var W = 600 * dpr;
+var pad = 40 * dpr;
+var thick = parseFloat(thickness.value) || 1;
+var data = [
+{ label: 'Board Feet', value: resBF.textContent },
+{ label: 'MBF', value: resMBF.textContent },
+{ label: 'Cubic Meters', value: resM3.textContent },
+{ label: 'Cubic Feet', value: resFT3.textContent },
+{ label: 'Square Feet @ ' + thick + '"', value: resSQFT.textContent },
+{ label: 'Square Meters @ ' + thick + '"', value: resSQM.textContent }
+];
+var unitNames = { mbf:'MBF', bf:'Board Feet', m3:'Cubic Meters', ft3:'Cubic Feet', sqft:'Square Feet', sqm:'Square Meters' };
+var inputSummary = inputValue.value + ' ' + unitNames[inputUnit.value];
+var titleH = 50 * dpr;
+var subtitleH = 30 * dpr;
+var rowH = 70 * dpr;
+var rowGap = 12 * dpr;
+var colGap = 12 * dpr;
+var gridTop = pad + titleH + subtitleH + 20 * dpr;
+var cols = 2;
+var rows = Math.ceil(data.length / cols);
+var colW = (W - pad * 2 - colGap) / cols;
+var gridH = rows * rowH + (rows - 1) * rowGap;
+var footerH = 40 * dpr;
+var H = gridTop + gridH + footerH + pad;
+var canvas = document.createElement('canvas');
+canvas.width = W;
+canvas.height = H;
+var ctx = canvas.getContext('2d');
+var bgGrad = ctx.createLinearGradient(0, 0, W, H);
+bgGrad.addColorStop(0, '#241f1a');
+bgGrad.addColorStop(1, '#2e2820');
+ctx.fillStyle = bgGrad;
+roundRect(ctx, 0, 0, W, H, 20 * dpr);
+ctx.fill();
+ctx.strokeStyle = '#8b7355';
+ctx.lineWidth = 2 * dpr;
+roundRect(ctx, 0, 0, W, H, 20 * dpr);
+ctx.stroke();
+ctx.fillStyle = '#e0b088';
+ctx.font = 'bold ' + (22 * dpr) + 'px Georgia, serif';
+ctx.textAlign = 'center';
+ctx.fillText('Lumber Volume Converter', W / 2, pad + 28 * dpr);
+ctx.fillStyle = '#9a8d7e';
+ctx.font = (13 * dpr) + 'px monospace';
+ctx.fillText('Input: ' + inputSummary, W / 2, pad + titleH + 12 * dpr);
+for (var i = 0; i < data.length; i++) {
+var col = i % cols;
+var row = Math.floor(i / cols);
+var x = pad + col * (colW + colGap);
+var y = gridTop + row * (rowH + rowGap);
+ctx.fillStyle = 'rgba(0,0,0,0.25)';
+roundRect(ctx, x, y, colW, rowH, 10 * dpr);
+ctx.fill();
+ctx.fillStyle = '#e0b088';
+ctx.font = 'bold ' + (20 * dpr) + 'px Georgia, serif';
+ctx.textAlign = 'center';
+ctx.fillText(data[i].value, x + colW / 2, y + 32 * dpr);
+ctx.fillStyle = '#9a8d7e';
+ctx.font = (10 * dpr) + 'px monospace';
+ctx.fillText(data[i].label.toUpperCase(), x + colW / 2, y + 54 * dpr);
+}
+ctx.fillStyle = '#5a4d3e';
+ctx.font = (10 * dpr) + 'px monospace';
+ctx.fillText('TIMBER TOOLS', W / 2, H - pad + 10 * dpr);
+return canvas;
+}
+saveImageBtn.addEventListener('click', function() {
+if (resBF.textContent === '\u2014') return;
+var canvas = generateResultsImage();
+imageModalImg.src = canvas.toDataURL('image/png');
+imageModal.classList.add('visible');
+});
+imageModalClose.addEventListener('click', function() {
+imageModal.classList.remove('visible');
+});
+imageModal.addEventListener('click', function(e) {
+if (e.target === imageModal) imageModal.classList.remove('visible');
+});
 </script>
-
 </body>
 </html>
