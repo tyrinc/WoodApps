@@ -30,8 +30,6 @@ input:focus,select:focus{border-color:#c4956a;box-shadow:0 0 0 3px rgba(196,149,
 input::placeholder{color:#9a8d7e;opacity:0.5}
 select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239a8d7e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 select option{background:#241f1a;color:#e8ddd0}
-.thickness-row{overflow:hidden;max-height:0;opacity:0;transition:max-height 0.35s ease,opacity 0.3s ease,margin 0.3s ease;margin-top:0}
-.thickness-row.visible{max-height:80px;opacity:1;margin-top:14px}
 .divider{display:flex;align-items:center;justify-content:center;margin:4px 0}
 .swap-btn{background:#2e2820;border:1px solid #3d3529;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;color:#9a8d7e}
 .swap-btn:hover{border-color:#c4956a;color:#c4956a;transform:rotate(180deg)}
@@ -72,7 +70,7 @@ select option{background:#241f1a;color:#e8ddd0}
 TYR Wood Tools for Lumber Professionals
 </div>
 <h1>Lumber Volume Converter</h1>
-<div class="subtitle">Board Feet &#183; Cubic Meters &#183; Square Feet &#183; Square Meters</div>
+<div class="subtitle">Board Feet &#183; Cubic Meters &#183; Square Feet &#183; Lineal Feet</div>
 </div>
 <div class="card">
 <div class="card-label"><span class="dot"></span> Input</div>
@@ -90,15 +88,18 @@ TYR Wood Tools for Lumber Professionals
 <option value="ft3">Cubic Feet (FT&#179;)</option>
 <option value="sqft">Square Feet (SQFT)</option>
 <option value="sqm">Square Meters (M&#178;)</option>
+<option value="lf">Lineal Feet (LF)</option>
 </select>
 </div>
 </div>
-<div class="thickness-row" id="thicknessRow">
 <div class="field-group">
+<div class="field">
+<label>Width (inches)</label>
+<input type="number" id="widthIn" placeholder="6.0" min="0" step="any" value="6">
+</div>
 <div class="field">
 <label>Thickness (inches)</label>
 <input type="number" id="thickness" placeholder="1.0" min="0" step="any" value="1">
-</div>
 </div>
 </div>
 </div>
@@ -152,14 +153,19 @@ TYR Wood Tools for Lumber Professionals
 <div class="result-unit">Cubic Feet</div>
 <div class="copy-toast">Copied</div>
 </div>
-<div class="result-item full-width" onclick="copySingle(this,'sqft')">
+<div class="result-item" onclick="copySingle(this,'sqft')">
 <div class="result-value" id="resSQFT">&#8212;</div>
-<div class="result-unit">Square Feet <span id="sqftThicknessNote"></span></div>
+<div class="result-unit">Square Feet <span id="sqftDimNote"></span></div>
 <div class="copy-toast">Copied</div>
 </div>
-<div class="result-item full-width" onclick="copySingle(this,'sqm')">
+<div class="result-item" onclick="copySingle(this,'sqm')">
 <div class="result-value" id="resSQM">&#8212;</div>
-<div class="result-unit">Square Meters <span id="sqmThicknessNote"></span></div>
+<div class="result-unit">Square Meters <span id="sqmDimNote"></span></div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item full-width" onclick="copySingle(this,'lf')">
+<div class="result-value" id="resLF">&#8212;</div>
+<div class="result-unit">Lineal Feet <span id="lfDimNote"></span></div>
 <div class="copy-toast">Copied</div>
 </div>
 </div>
@@ -168,7 +174,9 @@ TYR Wood Tools for Lumber Professionals
 <strong>1 Board Foot</strong> = 1 ft x 1 ft x 1 in = 144 in&#179;<br>
 <strong>1 MBF</strong> = 1,000 Board Feet<br>
 <strong>1 M&#179;</strong> &#8776; 424.752 Board Feet<br>
-<strong>Square Feet / Square Meters</strong> require a thickness to convert to volume.
+<strong>Lineal Feet</strong> = BF x 12 / (Width x Thickness)<br>
+<strong>Square Feet</strong> = BF / Thickness<br>
+<strong>Width + Thickness</strong> used for SQFT, SQM, and LF conversions.
 </div>
 </div>
 <div class="image-modal" id="imageModal">
@@ -180,7 +188,7 @@ TYR Wood Tools for Lumber Professionals
 var inputValue=document.getElementById('inputValue');
 var inputUnit=document.getElementById('inputUnit');
 var thickness=document.getElementById('thickness');
-var thicknessRow=document.getElementById('thicknessRow');
+var widthIn=document.getElementById('widthIn');
 var swapBtn=document.getElementById('swapBtn');
 var resBF=document.getElementById('resBF');
 var resMBF=document.getElementById('resMBF');
@@ -188,8 +196,10 @@ var resM3=document.getElementById('resM3');
 var resFT3=document.getElementById('resFT3');
 var resSQFT=document.getElementById('resSQFT');
 var resSQM=document.getElementById('resSQM');
-var sqftNote=document.getElementById('sqftThicknessNote');
-var sqmNote=document.getElementById('sqmThicknessNote');
+var resLF=document.getElementById('resLF');
+var sqftDimNote=document.getElementById('sqftDimNote');
+var sqmDimNote=document.getElementById('sqmDimNote');
+var lfDimNote=document.getElementById('lfDimNote');
 var BF_PER_M3=424.752;
 var BF_PER_FT3=12;
 var DASH='\u2014';
@@ -203,7 +213,7 @@ function convert(){
 var val=parseFloat(inputValue.value);
 var unit=inputUnit.value;
 var thick=parseFloat(thickness.value)||1;
-thicknessRow.classList.toggle('visible',unit==='sqft'||unit==='sqm');
+var w=parseFloat(widthIn.value)||6;
 if(isNaN(val)||val===0){
 resBF.textContent=DASH;
 resMBF.textContent=DASH;
@@ -211,8 +221,10 @@ resM3.textContent=DASH;
 resFT3.textContent=DASH;
 resSQFT.textContent=DASH;
 resSQM.textContent=DASH;
-sqftNote.textContent='';
-sqmNote.textContent='';
+resLF.textContent=DASH;
+sqftDimNote.textContent='';
+sqmDimNote.textContent='';
+lfDimNote.textContent='';
 return;
 }
 var bf;
@@ -223,27 +235,31 @@ case'm3':bf=val*BF_PER_M3;break;
 case'ft3':bf=val*BF_PER_FT3;break;
 case'sqft':bf=val*thick;break;
 case'sqm':bf=val*10.7639*thick;break;
+case'lf':bf=val*w*thick/12;break;
 }
 var mbf=bf/1000;
 var m3=bf/BF_PER_M3;
 var ft3=bf/BF_PER_FT3;
-var displayThick=(unit==='sqft'||unit==='sqm')?thick:parseFloat(thickness.value)||1;
-var sqft=bf/displayThick;
+var sqft=bf/thick;
 var sqm=sqft/10.7639;
+var lf=bf*12/(w*thick);
 resBF.textContent=fmt(bf);
 resMBF.textContent=fmt(mbf);
 resM3.textContent=fmt(m3);
 resFT3.textContent=fmt(ft3);
 resSQFT.textContent=fmt(sqft);
 resSQM.textContent=fmt(sqm);
-sqftNote.textContent='@ '+displayThick+'" thick';
-sqmNote.textContent='@ '+displayThick+'" thick';
+resLF.textContent=fmt(lf);
+sqftDimNote.textContent='@ '+thick+'" thick';
+sqmDimNote.textContent='@ '+thick+'" thick';
+lfDimNote.textContent='@ '+w+'" x '+thick+'"';
 }
 inputValue.addEventListener('input',convert);
 inputUnit.addEventListener('change',convert);
 thickness.addEventListener('input',convert);
+widthIn.addEventListener('input',convert);
 swapBtn.addEventListener('click',function(){
-var units=['mbf','bf','m3','ft3','sqft','sqm'];
+var units=['mbf','bf','m3','ft3','sqft','sqm','lf'];
 var currentIdx=units.indexOf(inputUnit.value);
 var nextIdx=(currentIdx+1)%units.length;
 inputUnit.value=units[nextIdx];
@@ -253,16 +269,18 @@ convert();
 inputValue.focus();
 var copyAllBtn=document.getElementById('copyAllBtn');
 var copyAllLabel=document.getElementById('copyAllLabel');
-var unitLabels={bf:'Board Feet',mbf:'MBF',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters'};
+var unitLabels={bf:'Board Feet',mbf:'MBF',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters',lf:'Lineal Feet'};
 function getResultsText(){
 var thick=parseFloat(thickness.value)||1;
+var w=parseFloat(widthIn.value)||6;
 var lines=[
 'Board Feet: '+resBF.textContent,
 'MBF: '+resMBF.textContent,
 'Cubic Meters: '+resM3.textContent,
 'Cubic Feet: '+resFT3.textContent,
 'Square Feet: '+resSQFT.textContent+' @ '+thick+'" thick',
-'Square Meters: '+resSQM.textContent+' @ '+thick+'" thick'
+'Square Meters: '+resSQM.textContent+' @ '+thick+'" thick',
+'Lineal Feet: '+resLF.textContent+' @ '+w+'" x '+thick+'"'
 ];
 return lines.join('\n');
 }
@@ -311,15 +329,17 @@ var dpr=2;
 var W=600*dpr;
 var pad=40*dpr;
 var thick=parseFloat(thickness.value)||1;
+var w=parseFloat(widthIn.value)||6;
 var data=[
 {label:'Board Feet',value:resBF.textContent},
 {label:'MBF',value:resMBF.textContent},
 {label:'Cubic Meters',value:resM3.textContent},
 {label:'Cubic Feet',value:resFT3.textContent},
 {label:'Square Feet @ '+thick+'"',value:resSQFT.textContent},
-{label:'Square Meters @ '+thick+'"',value:resSQM.textContent}
+{label:'Square Meters @ '+thick+'"',value:resSQM.textContent},
+{label:'Lineal Feet @ '+w+'" x '+thick+'"',value:resLF.textContent}
 ];
-var unitNames={mbf:'MBF',bf:'Board Feet',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters'};
+var unitNames={mbf:'MBF',bf:'Board Feet',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters',lf:'Lineal Feet'};
 var inputSummary=inputValue.value+' '+unitNames[inputUnit.value];
 var titleH=50*dpr;
 var subtitleH=30*dpr;
