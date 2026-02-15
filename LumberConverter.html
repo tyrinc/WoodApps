@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TYR Wood Tools - Lumber Volume Converter</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#1a1612;color:#e8ddd0;font-family:'DM Mono',monospace;min-height:100vh}
+body{display:flex;justify-content:center;align-items:flex-start;padding:40px 20px;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(196,149,106,0.015) 2px,rgba(196,149,106,0.015) 4px);pointer-events:none;z-index:0}
+.app{width:100%;max-width:520px;position:relative;z-index:1;animation:fadeUp 0.6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.header{text-align:center;margin-bottom:36px}
+.header-brand{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:12px;color:#c4956a;font-size:11px;letter-spacing:3px;text-transform:uppercase}
+.header-brand img{width:75px;height:75px}
+h1{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#e8ddd0;letter-spacing:-0.5px;line-height:1.2}
+.subtitle{color:#9a8d7e;font-size:12px;margin-top:8px;letter-spacing:0.5px}
+.card{background:#241f1a;border:1px solid #3d3529;border-radius:12px;padding:28px;margin-bottom:16px;transition:border-color 0.3s}
+.card:hover{border-color:#8b7355}
+.card-label{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:#c4956a;display:inline-block;flex-shrink:0}
+.field-group{display:flex;gap:12px;margin-bottom:14px}
+.field-group:last-child{margin-bottom:0}
+.field{flex:1;display:flex;flex-direction:column;gap:6px}
+label{font-size:11px;color:#9a8d7e;text-transform:uppercase;letter-spacing:1.5px}
+input,select{background:#1a1612;border:1px solid #3d3529;border-radius:8px;padding:12px 14px;color:#e8ddd0;font-family:'DM Mono',monospace;font-size:15px;outline:none;transition:border-color 0.25s,box-shadow 0.25s;width:100%;-webkit-appearance:none}
+input:focus,select:focus{border-color:#c4956a;box-shadow:0 0 0 3px rgba(196,149,106,0.15)}
+input::placeholder{color:#9a8d7e;opacity:0.5}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239a8d7e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+select option{background:#241f1a;color:#e8ddd0}
+.thickness-row{overflow:hidden;max-height:0;opacity:0;transition:max-height 0.35s ease,opacity 0.3s ease,margin 0.3s ease;margin-top:0}
+.thickness-row.visible{max-height:80px;opacity:1;margin-top:14px}
+.divider{display:flex;align-items:center;justify-content:center;margin:4px 0}
+.swap-btn{background:#2e2820;border:1px solid #3d3529;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;color:#9a8d7e}
+.swap-btn:hover{border-color:#c4956a;color:#c4956a;transform:rotate(180deg)}
+.swap-btn svg{width:18px;height:18px}
+.results-card{background:linear-gradient(135deg,#241f1a 0%,#2e2820 100%);border:1px solid #8b7355}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.result-item{background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;text-align:center;transition:background 0.2s;cursor:pointer;position:relative}
+.result-item:hover{background:rgba(0,0,0,0.3)}
+.result-item:active{transform:scale(0.98)}
+.result-item.full-width{grid-column:1 / -1}
+.result-value{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:#e0b088;margin-bottom:4px;word-break:break-all}
+.result-unit{font-size:11px;color:#9a8d7e;text-transform:uppercase;letter-spacing:1.5px}
+.info-bar{margin-top:24px;padding:16px 20px;background:#241f1a;border:1px solid #3d3529;border-radius:10px;font-size:11px;color:#9a8d7e;line-height:1.7;letter-spacing:0.3px}
+.info-bar strong{color:#c4956a;font-weight:500}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:8px}
+.results-header .card-label{margin-bottom:0;flex-shrink:0}
+.results-actions{display:flex;gap:8px}
+.copy-all-btn{background:rgba(196,149,106,0.1);border:1px solid #3d3529;border-radius:6px;padding:6px 14px;color:#c4956a;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;gap:6px}
+.copy-all-btn:hover{background:rgba(196,149,106,0.2);border-color:#c4956a}
+.copy-all-btn svg{width:14px;height:14px}
+.copy-all-btn.copied{background:rgba(106,196,130,0.15);border-color:#6ac482;color:#6ac482}
+.copy-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(106,196,130,0.9);color:#fff;font-size:11px;font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.copy-toast.show{opacity:1}
+.image-modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.85);flex-direction:column;align-items:center;justify-content:center;padding:20px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.image-modal.visible{display:flex}
+.image-modal img{max-width:100%;max-height:70vh;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.5)}
+.image-modal-hint{color:#9a8d7e;font-family:'DM Mono',monospace;font-size:12px;margin-top:16px;text-align:center;letter-spacing:0.5px;line-height:1.6}
+.image-modal-close{margin-top:20px;background:#2e2820;border:1px solid #3d3529;border-radius:8px;padding:10px 28px;color:#e8ddd0;font-family:'DM Mono',monospace;font-size:13px;cursor:pointer;transition:all 0.2s}
+.image-modal-close:hover{border-color:#c4956a;color:#c4956a}
+@media(max-width:480px){h1{font-size:22px}.card{padding:20px}.result-grid{grid-template-columns:1fr}.result-item.full-width{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+<div class="header-brand">
+<img src="data:image/png;base64,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" alt="TYR Logo">
+TYR Wood Tools for Lumber Professionals
+</div>
+<h1>Lumber Volume Converter</h1>
+<div class="subtitle">Board Feet &#183; Cubic Meters &#183; Square Feet &#183; Square Meters</div>
+</div>
+<div class="card">
+<div class="card-label"><span class="dot"></span> Input</div>
+<div class="field-group">
+<div class="field">
+<label>Value</label>
+<input type="number" id="inputValue" placeholder="0.00" min="0" step="any">
+</div>
+<div class="field">
+<label>Unit</label>
+<select id="inputUnit">
+<option value="mbf">MBF</option>
+<option value="bf">Board Feet (BF)</option>
+<option value="m3">Cubic Meters (M&#179;)</option>
+<option value="ft3">Cubic Feet (FT&#179;)</option>
+<option value="sqft">Square Feet (SQFT)</option>
+<option value="sqm">Square Meters (M&#178;)</option>
+</select>
+</div>
+</div>
+<div class="thickness-row" id="thicknessRow">
+<div class="field-group">
+<div class="field">
+<label>Thickness (inches)</label>
+<input type="number" id="thickness" placeholder="1.0" min="0" step="any" value="1">
+</div>
+</div>
+</div>
+</div>
+<div class="divider">
+<button class="swap-btn" id="swapBtn" title="Swap units">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M7 4v16m0 0l-4-4m4 4l4-4"/>
+<path d="M17 20V4m0 0l4 4m-4-4l-4 4"/>
+</svg>
+</button>
+</div>
+<div class="card results-card">
+<div class="results-header">
+<div class="card-label"><span class="dot"></span> Results</div>
+<div class="results-actions">
+<button class="copy-all-btn" id="copyAllBtn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+</svg>
+<span id="copyAllLabel">Copy</span>
+</button>
+<button class="copy-all-btn" id="saveImageBtn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+<circle cx="8.5" cy="8.5" r="1.5"/>
+<polyline points="21 15 16 10 5 21"/>
+</svg>
+<span>Image</span>
+</button>
+</div>
+</div>
+<div class="result-grid" id="results">
+<div class="result-item" onclick="copySingle(this,'bf')">
+<div class="result-value" id="resBF">&#8212;</div>
+<div class="result-unit">Board Feet</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this,'mbf')">
+<div class="result-value" id="resMBF">&#8212;</div>
+<div class="result-unit">MBF</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this,'m3')">
+<div class="result-value" id="resM3">&#8212;</div>
+<div class="result-unit">Cubic Meters</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item" onclick="copySingle(this,'ft3')">
+<div class="result-value" id="resFT3">&#8212;</div>
+<div class="result-unit">Cubic Feet</div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item full-width" onclick="copySingle(this,'sqft')">
+<div class="result-value" id="resSQFT">&#8212;</div>
+<div class="result-unit">Square Feet <span id="sqftThicknessNote"></span></div>
+<div class="copy-toast">Copied</div>
+</div>
+<div class="result-item full-width" onclick="copySingle(this,'sqm')">
+<div class="result-value" id="resSQM">&#8212;</div>
+<div class="result-unit">Square Meters <span id="sqmThicknessNote"></span></div>
+<div class="copy-toast">Copied</div>
+</div>
+</div>
+</div>
+<div class="info-bar">
+<strong>1 Board Foot</strong> = 1 ft x 1 ft x 1 in = 144 in&#179;<br>
+<strong>1 MBF</strong> = 1,000 Board Feet<br>
+<strong>1 M&#179;</strong> &#8776; 424.752 Board Feet<br>
+<strong>Square Feet / Square Meters</strong> require a thickness to convert to volume.
+</div>
+</div>
+<div class="image-modal" id="imageModal">
+<img id="imageModalImg" src="" alt="Lumber conversion results">
+<div class="image-modal-hint">Long-press image to copy</div>
+<button class="image-modal-close" id="imageModalClose">Close</button>
+</div>
+<script>
+var inputValue=document.getElementById('inputValue');
+var inputUnit=document.getElementById('inputUnit');
+var thickness=document.getElementById('thickness');
+var thicknessRow=document.getElementById('thicknessRow');
+var swapBtn=document.getElementById('swapBtn');
+var resBF=document.getElementById('resBF');
+var resMBF=document.getElementById('resMBF');
+var resM3=document.getElementById('resM3');
+var resFT3=document.getElementById('resFT3');
+var resSQFT=document.getElementById('resSQFT');
+var resSQM=document.getElementById('resSQM');
+var sqftNote=document.getElementById('sqftThicknessNote');
+var sqmNote=document.getElementById('sqmThicknessNote');
+var BF_PER_M3=424.752;
+var BF_PER_FT3=12;
+var DASH='\u2014';
+function fmt(n){
+if(n===0)return'0';
+if(Math.abs(n)>=1000)return n.toLocaleString('en-US',{maximumFractionDigits:2});
+if(Math.abs(n)>=1)return n.toLocaleString('en-US',{maximumFractionDigits:4});
+return n.toLocaleString('en-US',{maximumFractionDigits:6});
+}
+function convert(){
+var val=parseFloat(inputValue.value);
+var unit=inputUnit.value;
+var thick=parseFloat(thickness.value)||1;
+thicknessRow.classList.toggle('visible',unit==='sqft'||unit==='sqm');
+if(isNaN(val)||val===0){
+resBF.textContent=DASH;
+resMBF.textContent=DASH;
+resM3.textContent=DASH;
+resFT3.textContent=DASH;
+resSQFT.textContent=DASH;
+resSQM.textContent=DASH;
+sqftNote.textContent='';
+sqmNote.textContent='';
+return;
+}
+var bf;
+switch(unit){
+case'bf':bf=val;break;
+case'mbf':bf=val*1000;break;
+case'm3':bf=val*BF_PER_M3;break;
+case'ft3':bf=val*BF_PER_FT3;break;
+case'sqft':bf=val*thick;break;
+case'sqm':bf=val*10.7639*thick;break;
+}
+var mbf=bf/1000;
+var m3=bf/BF_PER_M3;
+var ft3=bf/BF_PER_FT3;
+var displayThick=(unit==='sqft'||unit==='sqm')?thick:parseFloat(thickness.value)||1;
+var sqft=bf/displayThick;
+var sqm=sqft/10.7639;
+resBF.textContent=fmt(bf);
+resMBF.textContent=fmt(mbf);
+resM3.textContent=fmt(m3);
+resFT3.textContent=fmt(ft3);
+resSQFT.textContent=fmt(sqft);
+resSQM.textContent=fmt(sqm);
+sqftNote.textContent='@ '+displayThick+'" thick';
+sqmNote.textContent='@ '+displayThick+'" thick';
+}
+inputValue.addEventListener('input',convert);
+inputUnit.addEventListener('change',convert);
+thickness.addEventListener('input',convert);
+swapBtn.addEventListener('click',function(){
+var units=['mbf','bf','m3','ft3','sqft','sqm'];
+var currentIdx=units.indexOf(inputUnit.value);
+var nextIdx=(currentIdx+1)%units.length;
+inputUnit.value=units[nextIdx];
+convert();
+});
+convert();
+inputValue.focus();
+var copyAllBtn=document.getElementById('copyAllBtn');
+var copyAllLabel=document.getElementById('copyAllLabel');
+var unitLabels={bf:'Board Feet',mbf:'MBF',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters'};
+function getResultsText(){
+var thick=parseFloat(thickness.value)||1;
+var lines=[
+'Board Feet: '+resBF.textContent,
+'MBF: '+resMBF.textContent,
+'Cubic Meters: '+resM3.textContent,
+'Cubic Feet: '+resFT3.textContent,
+'Square Feet: '+resSQFT.textContent+' @ '+thick+'" thick',
+'Square Meters: '+resSQM.textContent+' @ '+thick+'" thick'
+];
+return lines.join('\n');
+}
+function showToast(el){
+var toast=el.querySelector('.copy-toast');
+if(!toast)return;
+toast.classList.add('show');
+setTimeout(function(){toast.classList.remove('show');},900);
+}
+function copySingle(el,unit){
+var valueEl=el.querySelector('.result-value');
+if(!valueEl||valueEl.textContent===DASH)return;
+var text=unitLabels[unit]+': '+valueEl.textContent;
+navigator.clipboard.writeText(text).then(function(){showToast(el);});
+}
+copyAllBtn.addEventListener('click',function(){
+if(resBF.textContent===DASH)return;
+navigator.clipboard.writeText(getResultsText()).then(function(){
+copyAllBtn.classList.add('copied');
+copyAllLabel.textContent='Copied!';
+setTimeout(function(){
+copyAllBtn.classList.remove('copied');
+copyAllLabel.textContent='Copy';
+},1500);
+});
+});
+var saveImageBtn=document.getElementById('saveImageBtn');
+var imageModal=document.getElementById('imageModal');
+var imageModalImg=document.getElementById('imageModalImg');
+var imageModalClose=document.getElementById('imageModalClose');
+function roundRect(ctx,x,y,w,h,r){
+ctx.beginPath();
+ctx.moveTo(x+r,y);
+ctx.lineTo(x+w-r,y);
+ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+ctx.lineTo(x+w,y+h-r);
+ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+ctx.lineTo(x+r,y+h);
+ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+ctx.lineTo(x,y+r);
+ctx.quadraticCurveTo(x,y,x+r,y);
+ctx.closePath();
+}
+function generateResultsImage(){
+var dpr=2;
+var W=600*dpr;
+var pad=40*dpr;
+var thick=parseFloat(thickness.value)||1;
+var data=[
+{label:'Board Feet',value:resBF.textContent},
+{label:'MBF',value:resMBF.textContent},
+{label:'Cubic Meters',value:resM3.textContent},
+{label:'Cubic Feet',value:resFT3.textContent},
+{label:'Square Feet @ '+thick+'"',value:resSQFT.textContent},
+{label:'Square Meters @ '+thick+'"',value:resSQM.textContent}
+];
+var unitNames={mbf:'MBF',bf:'Board Feet',m3:'Cubic Meters',ft3:'Cubic Feet',sqft:'Square Feet',sqm:'Square Meters'};
+var inputSummary=inputValue.value+' '+unitNames[inputUnit.value];
+var titleH=50*dpr;
+var subtitleH=30*dpr;
+var rowH=70*dpr;
+var rowGap=12*dpr;
+var colGap=12*dpr;
+var gridTop=pad+titleH+subtitleH+20*dpr;
+var cols=2;
+var rows=Math.ceil(data.length/cols);
+var colW=(W-pad*2-colGap)/cols;
+var gridH=rows*rowH+(rows-1)*rowGap;
+var footerH=40*dpr;
+var H=gridTop+gridH+footerH+pad;
+var canvas=document.createElement('canvas');
+canvas.width=W;
+canvas.height=H;
+var ctx=canvas.getContext('2d');
+var bgGrad=ctx.createLinearGradient(0,0,W,H);
+bgGrad.addColorStop(0,'#241f1a');
+bgGrad.addColorStop(1,'#2e2820');
+ctx.fillStyle=bgGrad;
+roundRect(ctx,0,0,W,H,20*dpr);
+ctx.fill();
+ctx.strokeStyle='#8b7355';
+ctx.lineWidth=2*dpr;
+roundRect(ctx,0,0,W,H,20*dpr);
+ctx.stroke();
+ctx.fillStyle='#e0b088';
+ctx.font='bold '+(22*dpr)+'px Georgia,serif';
+ctx.textAlign='center';
+ctx.fillText('Lumber Volume Converter',W/2,pad+28*dpr);
+ctx.fillStyle='#9a8d7e';
+ctx.font=(13*dpr)+'px monospace';
+ctx.fillText('Input: '+inputSummary,W/2,pad+titleH+12*dpr);
+for(var i=0;i<data.length;i++){
+var col=i%cols;
+var row=Math.floor(i/cols);
+var x=pad+col*(colW+colGap);
+var y=gridTop+row*(rowH+rowGap);
+ctx.fillStyle='rgba(0,0,0,0.25)';
+roundRect(ctx,x,y,colW,rowH,10*dpr);
+ctx.fill();
+ctx.fillStyle='#e0b088';
+ctx.font='bold '+(20*dpr)+'px Georgia,serif';
+ctx.textAlign='center';
+ctx.fillText(data[i].value,x+colW/2,y+32*dpr);
+ctx.fillStyle='#9a8d7e';
+ctx.font=(10*dpr)+'px monospace';
+ctx.fillText(data[i].label.toUpperCase(),x+colW/2,y+54*dpr);
+}
+ctx.fillStyle='#5a4d3e';
+ctx.font=(10*dpr)+'px monospace';
+ctx.fillText('TYR WOOD TOOLS',W/2,H-pad+10*dpr);
+return canvas;
+}
+saveImageBtn.addEventListener('click',function(){
+if(resBF.textContent===DASH)return;
+var canvas=generateResultsImage();
+imageModalImg.src=canvas.toDataURL('image/png');
+imageModal.classList.add('visible');
+});
+imageModalClose.addEventListener('click',function(){
+imageModal.classList.remove('visible');
+});
+imageModal.addEventListener('click',function(e){
+if(e.target===imageModal)imageModal.classList.remove('visible');
+});
+</script>
+</body>
+</html>
